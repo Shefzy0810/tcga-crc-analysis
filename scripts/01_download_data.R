@@ -14,3 +14,8 @@ table(results$sample_type)
 
 # Step 2: Download the files (about 2 GB, run once)
 GDCdownload(query, directory = "data/GDCdata", files.per.chunk = 50)
+
+# Step 3: Combine all files into one dataset and save it
+data <- GDCprepare(query, directory = "data/GDCdata")
+saveRDS(data, "data/tcga_coad_se.rds")
+dim(data)

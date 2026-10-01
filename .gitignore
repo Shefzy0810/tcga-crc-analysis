@@ -5,3 +5,6 @@
 .DS_Store
 .quarto
 data/
+MANIFEST.txt
+df.rds
+results.rds
