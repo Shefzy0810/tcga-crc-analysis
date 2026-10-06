@@ -17,3 +17,4 @@ vsd <- vst(dds, blind = TRUE)
 pca_plot <- plotPCA(vsd, intgroup = "condition")
 pca_plot
 ggplot2::ggsave("results/pca_tumour_vs_normal.png", pca_plot, width = 7, height = 5)
+saveRDS(dds, "data/dds_filtered.rds")
