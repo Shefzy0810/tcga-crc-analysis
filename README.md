@@ -15,6 +15,7 @@ Identify genes differentially expressed between colon tumours and normal colon t
 2. **Filtering and quality control** (`scripts/02_filter_pca.R`): kept genes with at least 10 reads in at least 41 samples (the size of the smallest group), leaving 24,300 genes. Counts were transformed with DESeq2's variance stabilising transformation (VST, blind to group), and the samples were checked by PCA on the 500 most variable genes.
 3. **Differential expression** (`scripts/03_differential_expression.R`): DESeq2 with design `~ condition` (normal as reference). Genes were tested against a log2 fold change threshold of 1 (`lfcThreshold = 1`), with significance at Benjamini–Hochberg adjusted p < 0.05. Results were visualised with a volcano plot (EnhancedVolcano) and a heatmap of the top 25 up- and 25 down-regulated genes (pheatmap, row z-scores of VST counts).
 4. **Pathway analysis** (`scripts/04_pathway_analysis.R`): over-representation analysis with clusterProfiler, run separately for up- and down-regulated genes, using all 24,300 tested genes as the background (universe). GO Biological Process terms were tested with `enrichGO` (Ensembl IDs) and KEGG pathways with `enrichKEGG` (Ensembl IDs converted to Entrez with `bitr`). Significance was set at BH-adjusted p < 0.05.
+5. **Survival analysis** (`scripts/05_survival_analysis.R`): tumour samples only, using VST expression (not blind to group). Overall survival time was days to death, or days to last follow-up for censored patients. Patients with unreported vital status or missing or zero follow-up time were removed, and one sample was kept per patient, leaving 434 patients (95 deaths). Each of the top 100 DEGs was tested with a univariate Cox proportional hazards model, and p-values were BH-adjusted across the 100 genes. The top exploratory gene was shown with a Kaplan–Meier curve (median split, log-rank test; survival and survminer).
 
 ## Results
 ### Quality control
@@ -43,8 +44,15 @@ Tumour and normal samples separate clearly along PC1 (23% of variance). Normals 
 
 ![KEGG up](results/kegg_up_dotplot.png)
 
+### Survival analysis
+- **No gene among the top 100 DEGs was associated with overall survival after multiple-testing correction** (all BH-adjusted p ≥ 0.46). Genes that separate tumour from normal tissue are not necessarily prognostic among tumours, and 95 deaths give limited power to detect modest effects.
+- The strongest exploratory candidate was **TEX11** (hazard ratio 0.62 per unit of VST expression, unadjusted p = 0.006): higher expression went with better survival. In a median split, patients with high TEX11 had better survival than those with low TEX11 (log-rank p = 0.017). Because TEX11 was chosen from a screen of 100 genes and does not survive correction, this needs validation in an independent cohort.
+- The full Cox table is in `results/cox_top100_degs.csv`.
+
+![KM TEX11](results/km_TEX11.png)
+
 ## Tools
-R 4.6.1, TCGAbiolinks, SummarizedExperiment, DESeq2 1.52.0, EnhancedVolcano 1.30.0, pheatmap 1.0.13, clusterProfiler 4.20.2, org.Hs.eg.db
+R 4.6.1, TCGAbiolinks, SummarizedExperiment, DESeq2 1.52.0, EnhancedVolcano 1.30.0, pheatmap 1.0.13, clusterProfiler 4.20.2, org.Hs.eg.db, survival, survminer
 
 ## Status
-In progress: Phases 1–5 complete (setup, data, QC, differential expression, pathway analysis). Next: survival analysis.
+Analysis complete: Phases 1–6 (setup, data, QC, differential expression, pathway analysis, survival analysis). Next: write-up.
