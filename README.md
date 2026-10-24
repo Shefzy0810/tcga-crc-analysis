@@ -1,7 +1,9 @@
 # Tumour vs Normal Gene Expression and Survival in Colon Cancer (TCGA-COAD, validated in GSE39582)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23623271.svg)](https://doi.org/10.5281/zenodo.23623271)
+
 **Poster:** [doi.org/10.13140/RG.2.2.16664.15368](https://doi.org/10.13140/RG.2.2.16664.15368)  
-**Code archive (Zenodo):** DOI to be added
+**Code archive (Zenodo):** [doi:10.5281/zenodo.23623271](https://doi.org/10.5281/zenodo.23623271)
 
 ## Aim
 Identify genes differentially expressed between colon tumours and normal colon tissue, test whether they relate to patient survival, and validate any prognostic candidates in an independent cohort.
